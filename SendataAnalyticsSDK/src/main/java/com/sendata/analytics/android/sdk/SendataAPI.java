@@ -513,6 +513,8 @@ public class SendataAPI extends AbstractSendataAPI {
         }
 
         if (webView != null) {
+			// 先移除危险的系统接口
+	        removeJavascriptInterfaceFromWebView(webView);
             webView.getSettings().setJavaScriptEnabled(true);
             webView.addJavascriptInterface(new AppWebViewInterface(mContext, properties, enableVerify), "Sendata_APP_JS_Bridge");
             SendataAutoTrackHelper.addWebViewVisualInterface(webView);
@@ -524,6 +526,29 @@ public class SendataAPI extends AbstractSendataAPI {
     public void showUpWebView(WebView webView, boolean isSupportJellyBean, JSONObject properties) {
         showUpWebView(webView, properties, isSupportJellyBean, false);
     }
+	
+	/**
+	 * 从原生 WebView 中移除危险的 JavaScript 接口
+	 *
+	 * @param webView 原生 WebView 对象
+	 */
+	private void removeJavascriptInterfaceFromWebView(WebView webView) {
+	    if (webView == null) {
+	        return;
+	    }
+    
+	    try {
+	        // 移除系统默认的危险接口
+	        webView.removeJavascriptInterface("searchBoxJavaBridge_");
+	        webView.removeJavascriptInterface("accessibility");
+	        webView.removeJavascriptInterface("accessibilityTraversal");
+        
+	        SALog.i(TAG, "已从原生 WebView 移除危险的 JavaScript 接口");
+	    } catch (Exception e) {
+	        SALog.i(TAG, "移除原生 WebView JavaScript 接口时出现异常: " + e.getMessage());
+	        // 这里不抛出异常，因为在某些设备上可能不存在这些接口
+	    }
+	}
 
     @Override
     @Deprecated
@@ -537,6 +562,9 @@ public class SendataAPI extends AbstractSendataAPI {
             if (x5WebView == null) {
                 return;
             }
+			
+	        // 先移除危险的系统接口
+	        removeJavascriptInterfaceFromX5WebView(x5WebView);
 
             Class<?> clazz = x5WebView.getClass();
             Method addJavascriptInterface = clazz.getMethod("addJavascriptInterface", Object.class, String.class);
@@ -556,7 +584,9 @@ public class SendataAPI extends AbstractSendataAPI {
             if (x5WebView == null) {
                 return;
             }
-
+	        // 先移除危险的系统接口
+	        removeJavascriptInterfaceFromX5WebView(x5WebView);
+			
             Class<?> clazz = x5WebView.getClass();
             Method addJavascriptInterface = clazz.getMethod("addJavascriptInterface", Object.class, String.class);
             if (addJavascriptInterface == null) {
@@ -568,6 +598,34 @@ public class SendataAPI extends AbstractSendataAPI {
             com.sendata.analytics.android.sdk.SALog.printStackTrace(e);
         }
     }
+
+	/**
+	 * 从 X5WebView 中移除危险的 JavaScript 接口
+	 *
+	 * @param x5WebView X5WebView 对象
+	 */
+	private void removeJavascriptInterfaceFromX5WebView(Object x5WebView) {
+	    if (x5WebView == null) {
+	        return;
+	    }
+    
+	    try {
+	        Class<?> clazz = x5WebView.getClass();
+	        Method removeJavascriptInterface = clazz.getMethod("removeJavascriptInterface", String.class);
+        
+	        if (removeJavascriptInterface != null) {
+	            // 移除系统默认的危险接口
+	            removeJavascriptInterface.invoke(x5WebView, "searchBoxJavaBridge_");
+	            removeJavascriptInterface.invoke(x5WebView, "accessibility");
+	            removeJavascriptInterface.invoke(x5WebView, "accessibilityTraversal");
+            
+	            SALog.i(TAG, "已从 X5WebView 移除危险的 JavaScript 接口");
+	        }
+	    } catch (Exception e) {
+	        SALog.i(TAG, "移除 X5WebView JavaScript 接口时出现异常: " + e.getMessage());
+	        // 这里不抛出异常，因为在某些设备上可能不存在这些接口
+	    }
+	}
 
     @Override
     public void showUpX5WebView(Object x5WebView) {
