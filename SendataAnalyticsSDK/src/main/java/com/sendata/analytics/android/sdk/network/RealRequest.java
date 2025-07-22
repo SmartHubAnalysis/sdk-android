@@ -31,6 +31,8 @@ import java.net.URL;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 import static com.sendata.analytics.android.sdk.util.Base64Coder.CHARSET_UTF8;
 
@@ -135,6 +137,16 @@ class RealRequest {
         if (configOptions != null && configOptions.mSSLSocketFactory != null
                 && conn instanceof HttpsURLConnection) {
             ((HttpsURLConnection) conn).setSSLSocketFactory(configOptions.mSSLSocketFactory);
+            httpsConn.setHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+			        boolean isValid = HttpsURLConnection.getDefaultHostnameVerifier().verify(hostname, session);
+			        if (!isValid) {
+			            SALog.i(TAG, "主机名验证失败，请检查服务器证书配置: " + hostname);
+			        }
+			        return isValid;
+                }
+            });
         }
         return conn;
     }

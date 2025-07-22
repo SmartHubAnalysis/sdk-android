@@ -2262,8 +2262,8 @@ public class SendataAPI extends AbstractSendataAPI {
                 public void run() {
                     String hostServer = serverURI.getHost();
                     if (!TextUtils.isEmpty(hostServer) && hostServer.contains("_")) {
-                        SALog.i(TAG, "Server url " + serverUrl + " contains '_' is not recommend，" +
-                                "see details: https://en.wikipedia.org/wiki/Hostname");
+                        SALog.i(TAG, "Server url " + serverUrl + " contains '_' is not recommend" +
+                                "");
                     }
                 }
             });
