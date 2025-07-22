@@ -137,7 +137,7 @@ class RealRequest {
         if (configOptions != null && configOptions.mSSLSocketFactory != null
                 && conn instanceof HttpsURLConnection) {
             ((HttpsURLConnection) conn).setSSLSocketFactory(configOptions.mSSLSocketFactory);
-            httpsConn.setHostnameVerifier(new HostnameVerifier() {
+            ((HttpsURLConnection) conn).setHostnameVerifier(new HostnameVerifier() {
                 @Override
                 public boolean verify(String hostname, SSLSession session) {
 			        boolean isValid = HttpsURLConnection.getDefaultHostnameVerifier().verify(hostname, session);
