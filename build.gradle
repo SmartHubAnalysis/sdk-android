@@ -5,12 +5,12 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
-//        maven {
-//            url 'https://maven.google.com'
-//        }
-        //添加 Sendata Analytics maven 库地址
-        maven { url 'https://jitpack.io' }
         google()
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.3'
@@ -26,14 +26,12 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
-        maven {
-            url 'https://maven.google.com'
-        }
-        maven { url 'https://jitpack.io' }
-        //添加 Sendata Analytics maven 库地址
-//        maven {
-//            url 'https://dl.bintray.com/zouyuhan/maven'
-//        }
+        google()
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
+        maven { url "https://jitpack.io" }
 
     }
 }
