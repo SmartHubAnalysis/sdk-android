@@ -31,7 +31,7 @@
 |--------------|----------------------------------|
 | **SDK名称**  | 深演｜品友SDK（安卓版）          |
 | **开发者**   | 深演智能                         |
-| **包名**     | com.sendata.analytics.android                 |
+| **包名**     | [com.sendata.analytics.android](https://jitpack.io/#SmartHubAnalysis/sdk-android)                 |
 | **SDK版本**  | V1.0.1                           |
 | **更新时间** | 2025年7月22日                    |
 | **SDK大小**  | 541 KB                           |
